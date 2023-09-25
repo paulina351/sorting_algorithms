@@ -1,23 +1,8 @@
 #include "sort.h"
 
-void swap_integer(int *j, int *k);
 void lomuto_partition(int *array, size_t size, int lt, int rt);
 void lomuto_sort(int *array, size_t size, int lt, int rt);
 void quick_sort(int *array, size_t size);
-
-/**
- * swap_integer -swap two integer in an array
- * @j: the first integer
- * @k: the second integer
- */
-void swap_integer(int *j, int *k)
-{
-	int temp;
-
-	temp = *j;
-	*j = *k;
-	*k = temp;
-}
 
 /**
  * lomuto_partition - order a subset of an array of integer according to
@@ -29,29 +14,28 @@ void swap_integer(int *j, int *k)
  */
 void lomuto_partition(int *array, size_t size, int lt, int rt)
 {
-	int *pivot, up, down;
+	int pivot = array[rt];
+	int x = lt - 1;
+	int y, temp;
 
-	pivot = array + rt;
-	for (up = down = lt; down < rt; down--)
+	for (y = lt; y <= rt - 1; y++)
 	{
-		if (array[down] < *pivot)
+		if (array[y] <= pivot)
 		{
-			if (up < down)
-			{
-				swap_integer(array + down, array + up);
+			x++;
+			temp = array[x];
+			array[x] = array[y];
+			array[y] = temp;
+			if (x != y)
 				print_array(array, size);
-			}
-			up++;
 		}
 	}
-
-	if (array[up] > *pivot)
-	{
-		swap_integer(array + up, pivot);
+	temp = array[x + 1];
+	array[x + 1] = array[rt];
+	array[rt] = temp;
+	if (x + 1 != rt)
 		print_array(array, size);
-	}
-
-	return (up);
+	return (x + 1);
 }
 
 /**
@@ -66,13 +50,13 @@ void lomuto_partition(int *array, size_t size, int lt, int rt)
 
 void lomuto_sort(int *array, size_t size, int lt, int rt)
 {
-	int tition;
+	int pivot;
 
-	if (rt - lt > 0)
+	if (rt < lt)
 	{
-		tition = lomuto_partition(array, size, lt, rt);
-		lomuto_sort(array, size, lt, tition - 1);
-		lomuto_sort(array, size, tition + 1, rt);
+		pivot = lomuto_partition(array, rt, lt, size);
+		lomuto_sort(array, lt, pivot - 1, size);
+		lomuto_sort(array, pivot + 1, rt, size);
 	}
 }
 
