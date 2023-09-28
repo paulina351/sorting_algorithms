@@ -1,7 +1,7 @@
 #include "sort.h"
 
 void merge_parray(int *prearr, int *buf, size_t fro, size_t mid, size_t back);
-void merge_sort_recursive(int *prearr, int *buf, size_t fro, size_t back);
+void merge_sort_recursion(int *prearr, int *buf, size_t fro, size_t back);
 void merge_sort(int *array, size_t size);
 
 /**
@@ -36,7 +36,7 @@ void merge_parray(int *parray, int *buf, size_t fro, size_t mid, size_t back)
 }
 
 /**
- * merge_sort_recursive - implements the merge sort algorithm through recursion
+ * merge_sort_recursion - implements the merge sort algorithm through recursion
  * @parray: the sub array of integer to sort
  * @buf: a buffer to store the sorted result
  * @fro: the front index of the array
@@ -49,14 +49,15 @@ void merge_sort_recursion(int *parray, int *buf, size_t fro, size_t back)
 	if (back - fro > 1)
 	{
 		mid = fro + (back - fro) / 2;
-		merge_sort_recursive(parray, buf, fro, mid);
-		merge_sort_recursive(parray, buf, mid, back);
+		merge_sort_recursion(parray, buf, fro, mid);
+		merge_sort_recursion(parray, buf, mid, back);
 		merge_parray(parray, buf, fro, mid, back);
 	}
 }
 
 /**
- * merge_sort - sort an array of intergers in ascending order using the merge sort algorithms
+ * merge_sort - sort an array of intergers in ascending order
+ * using the merge sort algorithms
  * @array: An array of integer
  * @size: the size of the array
  *
@@ -73,7 +74,7 @@ void merge_sort(int *array, size_t size)
 	if (buf == NULL)
 		return;
 
-	merge_sort_recursive(array, buf, 0, size);
+	merge_sort_recursion(array, buf, 0, size);
 
 	free(buf);
 }
